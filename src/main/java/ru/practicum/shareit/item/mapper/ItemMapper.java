@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.dto.ItemCreateRequest;
 import ru.practicum.shareit.item.dto.ItemUpdateRequest;
 import ru.practicum.shareit.item.dto.ItemView;
@@ -10,6 +11,7 @@ import ru.practicum.shareit.item.model.Item;
 /**
  * Маппер для {@link Item}.
  */
+@UtilityClass
 public class ItemMapper {
     public static ItemView toItemView(Item item) {
         return new ItemView(

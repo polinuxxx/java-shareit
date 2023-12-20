@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.user.dto.UserCreateRequest;
 import ru.practicum.shareit.user.dto.UserUpdateRequest;
 import ru.practicum.shareit.user.dto.UserView;
@@ -10,6 +11,7 @@ import ru.practicum.shareit.user.model.User;
 /**
  * Маппер для {@link User}.
  */
+@UtilityClass
 public class UserMapper {
     public static UserView toUserView(User user) {
         return new UserView(

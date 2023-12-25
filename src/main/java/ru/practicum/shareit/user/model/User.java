@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.user.model;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -7,25 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.base.AbstractEntity;
-import ru.practicum.shareit.request.model.ItemRequest;
-import ru.practicum.shareit.user.model.User;
 
 /**
- * Вещь.
+ * Пользователь.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Item extends AbstractEntity {
+public class User extends AbstractEntity {
     String name;
 
-    String description;
-
-    Boolean available;
-
-    User owner;
-
-    ItemRequest request;
+    String email;
 }

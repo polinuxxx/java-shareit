@@ -9,7 +9,7 @@ import ru.practicum.shareit.item.model.Item;
  * ДАО для {@link Item}.
  */
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findByOwnerId(Long userId);
+    List<Item> findByOwnerIdOrderByIdAsc(Long userId);
 
     @Query(" select item from Item item " +
             "where item.available = true and (lower(item.name) like lower(concat('%', ?1, '%')) " +

@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -103,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 
         checkUserExists(userId);
 
-        List<Item> items = itemRepository.findByOwnerId(userId);
+        List<Item> items = itemRepository.findByOwnerIdOrderByIdAsc(userId);
         List<Long> itemIds = items.stream().map(AbstractEntity::getId).collect(Collectors.toList());
 
         Map<Long, Booking> lastBookings = bookingRepository.findAllLastBookings(itemIds, LocalDateTime.now(),
@@ -131,7 +130,6 @@ public class ItemServiceImpl implements ItemService {
                     .build();
             views.add(view);
         });
-        views.sort(Comparator.comparing(ItemModel::getId));
 
         return views;
     }

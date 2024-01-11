@@ -1,7 +1,7 @@
 package ru.practicum.shareit.user.dto;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +15,7 @@ import ru.practicum.shareit.user.model.User;
 public class UserCreateRequest {
     String name;
 
-    @NotNull
+    @NotBlank
     @Email
     String email;
 }

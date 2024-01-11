@@ -1,6 +1,5 @@
-package ru.practicum.shareit.request.model;
+package ru.practicum.shareit.item.model;
 
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -15,7 +14,7 @@ import ru.practicum.shareit.base.AbstractEntity;
 import ru.practicum.shareit.user.model.User;
 
 /**
- * Запрос.
+ * Отзыв.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,12 +22,14 @@ import ru.practicum.shareit.user.model.User;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "requests", schema = "public")
-public class ItemRequest extends AbstractEntity {
-    String description;
+@Table(name = "comments", schema = "public")
+public class Comment extends AbstractEntity {
+
+    String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    User requestor;
+    Item item;
 
-    LocalDateTime created;
+    @ManyToOne(fetch = FetchType.LAZY)
+    User author;
 }

@@ -1,21 +1,13 @@
 package ru.practicum.shareit.user.dao;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.model.User;
 
 /**
  * ДАО для {@link User}.
  */
-public interface UserRepository {
-    User create(User user);
-
-    User patch(User user);
-
-    User getById(Long id);
-
-    List<User> getAll();
-
-    void delete(Long id);
-
-    boolean exists(Long id);
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Transactional(readOnly = true)
+    User findByEmail(String email);
 }

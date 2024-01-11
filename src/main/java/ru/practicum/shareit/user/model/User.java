@@ -1,5 +1,7 @@
 package ru.practicum.shareit.user.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +18,8 @@ import ru.practicum.shareit.base.AbstractEntity;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "users", schema = "public")
 public class User extends AbstractEntity {
     String name;
 

@@ -1,9 +1,10 @@
 package ru.practicum.shareit.item.dto;
 
+import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.item.model.Item;
 
 /**
@@ -11,7 +12,7 @@ import ru.practicum.shareit.item.model.Item;
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@SuperBuilder
 public class ItemView {
     Long id;
 
@@ -20,4 +21,6 @@ public class ItemView {
     String description;
 
     Boolean available;
+
+    List<CommentView> comments;
 }

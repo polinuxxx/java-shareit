@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.model.Comment;
 
 /**
  * ДАО для {@link Comment}.
  */
+@Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByItemId(Long itemId);
 

@@ -19,7 +19,7 @@ import ru.practicum.shareit.base.AbstractEntity;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "users")
 public class User extends AbstractEntity {
     String name;
 

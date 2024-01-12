@@ -95,11 +95,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllByBookerId(Long userId, BookingState state) {
+    public List<Booking> getAllByBookerId(Long userId, String state) {
         log.info("Получение всех бронирований пользователя с id = {}", userId);
         checkUserExists(userId);
 
-        switch (state) {
+        switch (convertStringToState(state)) {
             case ALL:
                 return bookingRepository.findByBookerIdOrderByStartDesc(userId);
             case CURRENT:
@@ -119,11 +119,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllByOwnerId(Long userId, BookingState state) {
+    public List<Booking> getAllByOwnerId(Long userId, String state) {
         log.info("Получение всех бронирований по вещам для владельца с id = {}", userId);
         checkUserExists(userId);
 
-        switch (state) {
+        switch (convertStringToState(state)) {
             case ALL:
                 return bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
             case CURRENT:
@@ -152,6 +152,14 @@ public class BookingServiceImpl implements BookingService {
         if (!updateUserId.equals(ownerId)) {
             throw new EntityNotFoundException("Пользователю " + updateUserId +
                     " запрещено редактирование чужого бронирования");
+        }
+    }
+
+    private BookingState convertStringToState(String stringState) {
+        try {
+            return BookingState.valueOf(stringState);
+        } catch (IllegalArgumentException exception) {
+            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
         }
     }
 }

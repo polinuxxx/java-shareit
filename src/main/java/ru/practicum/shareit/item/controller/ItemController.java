@@ -31,6 +31,8 @@ import ru.practicum.shareit.item.service.ItemService;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
+    private static final String USER_ID_REQUEST_HEADER_NAME = "X-Sharer-User-Id";
+
     private final ItemService itemService;
 
     private final ItemConverter itemConverter;
@@ -40,26 +42,26 @@ public class ItemController {
     private final ItemModelConverter itemModelConverter;
 
     @PostMapping
-    public ItemView create(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemView create(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                            @RequestBody @Valid ItemCreateRequest request) {
         return itemConverter.convert(itemService.create(userId, itemConverter.convert(request)));
     }
 
     @PatchMapping("/{itemId}")
-    public ItemView patch(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemView patch(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                           @PathVariable Long itemId,
                           @RequestBody @Valid ItemUpdateRequest request) {
         return itemConverter.convert(itemService.patch(userId, itemId, itemConverter.convert(request)));
     }
 
     @GetMapping("/{itemId}")
-    public ItemWithBookingView getById(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemWithBookingView getById(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                                        @PathVariable Long itemId) {
         return itemModelConverter.convert(itemService.getById(userId, itemId));
     }
 
     @GetMapping
-    public List<ItemWithBookingView> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemWithBookingView> getByUserId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId) {
         return itemModelConverter.convert(itemService.getByUserId(userId));
     }
 
@@ -69,7 +71,7 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentView createComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public CommentView createComment(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                                      @PathVariable Long itemId,
                                      @RequestBody @Valid CommentCreateRequest request) {
         return commentConverter.convert(itemService.createComment(userId, itemId, commentConverter.convert(request)));

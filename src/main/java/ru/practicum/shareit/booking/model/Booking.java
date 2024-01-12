@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.base.AbstractEntity;
@@ -23,11 +24,12 @@ import ru.practicum.shareit.user.model.User;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(exclude = {"item", "booker"})
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "bookings", schema = "public")
+@Table(name = "bookings")
 public class Booking extends AbstractEntity {
 
     @Column(name = "start_date")

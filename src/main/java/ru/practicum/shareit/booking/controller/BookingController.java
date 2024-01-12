@@ -16,9 +16,7 @@ import ru.practicum.shareit.booking.dto.BookingCreateRequest;
 import ru.practicum.shareit.booking.dto.BookingView;
 import ru.practicum.shareit.booking.mapper.BookingConverter;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.exception.ValidationException;
 
 /**
  * Контроллер для {@link Booking}.
@@ -27,46 +25,40 @@ import ru.practicum.shareit.exception.ValidationException;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 public class BookingController {
+    private static final String USER_ID_REQUEST_HEADER_NAME = "X-Sharer-User-Id";
+
     private final BookingService bookingService;
 
     private final BookingConverter bookingConverter;
 
     @PostMapping
-    public BookingView create(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingView create(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
             @RequestBody @Valid BookingCreateRequest request) {
         return bookingConverter.convert(bookingService.create(userId, bookingConverter.convert(request)));
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingView patch(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingView patch(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                              @PathVariable Long bookingId,
                              @RequestParam Boolean approved) {
         return bookingConverter.convert(bookingService.patch(userId, bookingId, approved));
     }
 
     @GetMapping("/{bookingId}")
-    public BookingView getById(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingView getById(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                                @PathVariable Long bookingId) {
         return bookingConverter.convert(bookingService.getById(userId, bookingId));
     }
 
     @GetMapping
-    public List<BookingView> getAllByBookerId(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingView> getAllByBookerId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                                               @RequestParam(defaultValue = "ALL") String state) {
-        return bookingConverter.convert(bookingService.getAllByBookerId(userId, convertStringToState(state)));
+        return bookingConverter.convert(bookingService.getAllByBookerId(userId, state));
     }
 
     @GetMapping("/owner")
-    public List<BookingView> getAllByOwnerId(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingView> getAllByOwnerId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                                              @RequestParam(defaultValue = "ALL") String state) {
-        return bookingConverter.convert(bookingService.getAllByOwnerId(userId, convertStringToState(state)));
-    }
-
-    private BookingState convertStringToState(String stringState) {
-        try {
-            return BookingState.valueOf(stringState);
-        } catch (IllegalArgumentException exception) {
-            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
-        }
+        return bookingConverter.convert(bookingService.getAllByOwnerId(userId, state));
     }
 }

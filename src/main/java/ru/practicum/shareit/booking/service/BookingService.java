@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking.service;
 
 import java.util.List;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingState;
 
 /**
  * Сервис для {@link Booking}.
@@ -14,7 +13,7 @@ public interface BookingService {
 
     Booking getById(Long userId, Long bookingId);
 
-    List<Booking> getAllByBookerId(Long userId, BookingState state);
+    List<Booking> getAllByBookerId(Long userId, String state);
 
-    List<Booking> getAllByOwnerId(Long userId, BookingState state);
+    List<Booking> getAllByOwnerId(Long userId, String state);
 }

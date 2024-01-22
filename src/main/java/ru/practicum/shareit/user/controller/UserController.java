@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.UserCreateRequest;
 import ru.practicum.shareit.user.dto.UserUpdateRequest;
 import ru.practicum.shareit.user.dto.UserView;
-import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.mapper.UserConverter;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -27,25 +27,27 @@ import ru.practicum.shareit.user.service.UserService;
 public class UserController {
     private final UserService userService;
 
+    private final UserConverter userConverter;
+
     @PostMapping
     public UserView create(@RequestBody @Valid UserCreateRequest request) {
-        return UserMapper.toUserView(userService.create(UserMapper.toUser(request)));
+        return userConverter.convert(userService.create(userConverter.convert(request)));
     }
 
     @PatchMapping("/{userId}")
     public UserView patch(@PathVariable Long userId,
                           @RequestBody @Valid UserUpdateRequest request) {
-        return UserMapper.toUserView(userService.patch(userId, UserMapper.toUser(request)));
+        return userConverter.convert(userService.patch(userId, userConverter.convert(request)));
     }
 
     @GetMapping("/{userId}")
     public UserView getById(@PathVariable Long userId) {
-        return UserMapper.toUserView(userService.getById(userId));
+        return userConverter.convert(userService.getById(userId));
     }
 
     @GetMapping
     public List<UserView> getAll() {
-        return UserMapper.toUserViewList(userService.getAll());
+        return userConverter.convert(userService.getAll());
     }
 
     @DeleteMapping("/{userId}")

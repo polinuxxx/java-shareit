@@ -12,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.item.dto.CommentCreateRequest;
+import ru.practicum.shareit.item.dto.CommentView;
 import ru.practicum.shareit.item.dto.ItemCreateRequest;
 import ru.practicum.shareit.item.dto.ItemUpdateRequest;
 import ru.practicum.shareit.item.dto.ItemView;
-import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemWithBookingView;
+import ru.practicum.shareit.item.mapper.CommentConverter;
+import ru.practicum.shareit.item.mapper.ItemConverter;
+import ru.practicum.shareit.item.mapper.ItemModelConverter;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -26,33 +31,49 @@ import ru.practicum.shareit.item.service.ItemService;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
+    private static final String USER_ID_REQUEST_HEADER_NAME = "X-Sharer-User-Id";
+
     private final ItemService itemService;
 
+    private final ItemConverter itemConverter;
+
+    private final CommentConverter commentConverter;
+
+    private final ItemModelConverter itemModelConverter;
+
     @PostMapping
-    public ItemView create(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemView create(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                            @RequestBody @Valid ItemCreateRequest request) {
-        return ItemMapper.toItemView(itemService.create(userId, ItemMapper.toItem(request)));
+        return itemConverter.convert(itemService.create(userId, itemConverter.convert(request)));
     }
 
     @PatchMapping("/{itemId}")
-    public ItemView patch(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemView patch(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
                           @PathVariable Long itemId,
                           @RequestBody @Valid ItemUpdateRequest request) {
-        return ItemMapper.toItemView(itemService.patch(userId, itemId, ItemMapper.toItem(request)));
+        return itemConverter.convert(itemService.patch(userId, itemId, itemConverter.convert(request)));
     }
 
     @GetMapping("/{itemId}")
-    public ItemView getById(@PathVariable Long itemId) {
-        return ItemMapper.toItemView(itemService.getById(itemId));
+    public ItemWithBookingView getById(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
+                                       @PathVariable Long itemId) {
+        return itemModelConverter.convert(itemService.getById(userId, itemId));
     }
 
     @GetMapping
-    public List<ItemView> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        return ItemMapper.toItemViewList(itemService.getByUserId(userId));
+    public List<ItemWithBookingView> getByUserId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId) {
+        return itemModelConverter.convert(itemService.getByUserId(userId));
     }
 
     @GetMapping("/search")
     public List<ItemView> search(@RequestParam String text) {
-        return ItemMapper.toItemViewList(itemService.search(text));
+        return itemConverter.convert(itemService.search(text));
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentView createComment(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
+                                     @PathVariable Long itemId,
+                                     @RequestBody @Valid CommentCreateRequest request) {
+        return commentConverter.convert(itemService.createComment(userId, itemId, commentConverter.convert(request)));
     }
 }

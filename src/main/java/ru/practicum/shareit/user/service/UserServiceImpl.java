@@ -33,9 +33,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User patch(Long id, User user) {
         log.info("Редактирование пользователя {}", user);
-        user.setId(id);
 
-        User currentUser = getById(user.getId());
+        User currentUser = getById(id);
 
         if (user.getEmail() != null && !user.getEmail().isBlank()) {
             if (!currentUser.getEmail().equals(user.getEmail())) {

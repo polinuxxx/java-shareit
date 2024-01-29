@@ -1,9 +1,11 @@
 package ru.practicum.shareit.item.internal;
 
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.item.model.Comment;
 
 /**
@@ -11,6 +13,7 @@ import ru.practicum.shareit.item.model.Comment;
  */
 @Getter
 @Setter
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentModel {
     Long id;
@@ -18,4 +21,6 @@ public class CommentModel {
     String text;
 
     String authorName;
+
+    LocalDateTime creationDate;
 }

@@ -1,10 +1,13 @@
 package ru.practicum.shareit.item.dto;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.item.model.Comment;
 
 /**
@@ -12,6 +15,8 @@ import ru.practicum.shareit.item.model.Comment;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentView {
     Long id;
@@ -20,5 +25,6 @@ public class CommentView {
 
     String authorName;
 
-    LocalDateTime created;
+    @JsonProperty("created")
+    LocalDateTime creationDate;
 }

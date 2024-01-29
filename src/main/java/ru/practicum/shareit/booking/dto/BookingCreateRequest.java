@@ -7,13 +7,19 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.model.Booking;
 
 /**
  * Параметры запроса для создания {@link Booking}.
  */
 @Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingCreateRequest {
     @NotNull

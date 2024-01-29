@@ -22,7 +22,7 @@ import ru.practicum.shareit.user.service.UserService;
  * Контроллер для {@link User}.
  */
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;

@@ -1,9 +1,10 @@
 package ru.practicum.shareit.item.dto;
 
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +14,8 @@ import ru.practicum.shareit.item.model.Item;
  * Параметры ответа для {@link Item}.
  */
 @Getter
+@Setter
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 public class ItemWithBookingView {

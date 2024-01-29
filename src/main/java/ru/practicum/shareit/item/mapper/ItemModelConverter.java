@@ -1,10 +1,12 @@
 package ru.practicum.shareit.item.mapper;
 
 import java.util.List;
+import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.shareit.booking.internal.BookingModel;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.common.GeneratedMapper;
 import ru.practicum.shareit.item.dto.CommentView;
 import ru.practicum.shareit.item.dto.ItemWithBookingView;
 import ru.practicum.shareit.item.internal.CommentModel;
@@ -16,9 +18,9 @@ import ru.practicum.shareit.item.model.Item;
  * Конвертер ответа сервера для {@link Item} (промежуточный слой).
  */
 @Mapper(componentModel = "spring", imports = java.time.LocalDateTime.class)
+@AnnotateWith(GeneratedMapper.class)
 public interface ItemModelConverter {
 
-    @Mapping(expression = "java(LocalDateTime.now())", target = "created")
     CommentView convert(CommentModel commentModel);
 
     List<CommentView> convertCommentModels(List<CommentModel> commentModels);

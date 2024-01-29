@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.base.AbstractEntity;
@@ -24,6 +25,7 @@ import ru.practicum.shareit.item.internal.ItemModel;
 import ru.practicum.shareit.item.mapper.ItemModelConverter;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.dao.ItemRequestRepository;
 import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
@@ -44,6 +46,8 @@ public class ItemServiceImpl implements ItemService {
 
     private final CommentRepository commentRepository;
 
+    private final ItemRequestRepository itemRequestRepository;
+
     private final ItemModelConverter itemModelConverter;
 
     @Override
@@ -53,6 +57,9 @@ public class ItemServiceImpl implements ItemService {
 
         checkUserExists(userId);
         item.setOwner(User.builder().id(userId).build());
+        if (item.getRequest() != null) {
+            checkItemRequestExists(item.getRequest().getId());
+        }
 
         return itemRepository.save(item).toBuilder().build();
     }
@@ -63,12 +70,10 @@ public class ItemServiceImpl implements ItemService {
         log.info("Редактирование вещи {} пользователем с id = {}", item, userId);
 
         checkUserExists(userId);
-        item.setId(id);
-        item.setOwner(User.builder().id(userId).build());
 
         Item currentItem = itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Не найдена вещь по id = " + id));
-        checkOwner(item.getOwner().getId(), currentItem.getOwner().getId());
+        checkOwner(userId, currentItem.getOwner().getId());
 
         currentItem.setName(item.getName() != null && !item.getName().isBlank() ?
                 item.getName() : currentItem.getName());
@@ -97,12 +102,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemModel> getByUserId(Long userId) {
+    public List<ItemModel> getByUserId(Long userId, Integer from, Integer size) {
         log.info("Получение вещи по id пользователя = {}", userId);
 
         checkUserExists(userId);
 
-        List<Item> items = itemRepository.findByOwnerIdOrderByIdAsc(userId);
+        List<Item> items = itemRepository.findByOwnerIdOrderByIdAsc(userId, PageRequest.of(from / size, size));
         List<Long> itemIds = items.stream().map(AbstractEntity::getId).collect(Collectors.toList());
 
         Map<Long, Booking> lastBookings = bookingRepository.findAllLastBookings(itemIds, LocalDateTime.now(),
@@ -135,13 +140,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> search(String text) {
+    public List<Item> search(String text, Integer from, Integer size) {
         log.info("Поиск вещи, содержащей в названии или описании {}", text);
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
 
-        return new ArrayList<>(itemRepository.search(text));
+        return new ArrayList<>(itemRepository.search(text, PageRequest.of(from / size, size)));
     }
 
     @Override
@@ -175,6 +180,12 @@ public class ItemServiceImpl implements ItemService {
     private void checkUserExists(Long userId) {
         if (userId != null && !userRepository.existsById(userId)) {
            throw new EntityNotFoundException("Не найден пользователь по id = " + userId);
+        }
+    }
+
+    private void checkItemRequestExists(Long itemRequestId) {
+        if (itemRequestId != null && !itemRequestRepository.existsById(itemRequestId)) {
+            throw new EntityNotFoundException("Не найден запрос на вещь по id = " + itemRequestId);
         }
     }
 

@@ -15,9 +15,9 @@ public interface ItemService {
 
     ItemModel getById(Long userId, Long id);
 
-    List<ItemModel> getByUserId(Long userId);
+    List<ItemModel> getByUserId(Long userId, Integer from, Integer size);
 
-    List<Item> search(String text);
+    List<Item> search(String text, Integer from, Integer size);
 
     Comment createComment(Long userId, Long itemId, Comment comment);
 }

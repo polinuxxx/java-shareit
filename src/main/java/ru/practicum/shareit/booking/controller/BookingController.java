@@ -2,7 +2,9 @@ package ru.practicum.shareit.booking.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import ru.practicum.shareit.booking.service.BookingService;
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
+@Validated
 public class BookingController {
     private static final String USER_ID_REQUEST_HEADER_NAME = "X-Sharer-User-Id";
 
@@ -52,13 +55,17 @@ public class BookingController {
 
     @GetMapping
     public List<BookingView> getAllByBookerId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
-                                              @RequestParam(defaultValue = "ALL") String state) {
-        return bookingConverter.convert(bookingService.getAllByBookerId(userId, state));
+                                              @RequestParam(defaultValue = "ALL") String state,
+                                              @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                              @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+        return bookingConverter.convert(bookingService.getAllByBookerId(userId, state, from, size));
     }
 
     @GetMapping("/owner")
     public List<BookingView> getAllByOwnerId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
-                                             @RequestParam(defaultValue = "ALL") String state) {
-        return bookingConverter.convert(bookingService.getAllByOwnerId(userId, state));
+                                             @RequestParam(defaultValue = "ALL") String state,
+                                             @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                             @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+        return bookingConverter.convert(bookingService.getAllByOwnerId(userId, state, from, size));
     }
 }

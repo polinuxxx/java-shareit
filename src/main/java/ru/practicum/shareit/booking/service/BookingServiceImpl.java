@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dao.BookingRepository;
@@ -95,48 +96,62 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllByBookerId(Long userId, String state) {
+    public List<Booking> getAllByBookerId(Long userId, String state, Integer from, Integer size) {
         log.info("Получение всех бронирований пользователя с id = {}", userId);
         checkUserExists(userId);
 
+        LocalDateTime now = LocalDateTime.now();
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+
         switch (convertStringToState(state)) {
             case ALL:
-                return bookingRepository.findByBookerIdOrderByStartDesc(userId);
+                return bookingRepository.findByBookerIdOrderByStartDesc(userId, pageRequest);
             case CURRENT:
                 return bookingRepository.findByBookerIdAndStartLessThanEqualAndEndGreaterThanEqualOrderByStartDesc(
-                        userId, LocalDateTime.now(), LocalDateTime.now());
+                        userId, now, now, pageRequest);
             case PAST:
-                return bookingRepository.findByBookerIdAndEndLessThanOrderByStartDesc(userId, LocalDateTime.now());
+                return bookingRepository.findByBookerIdAndEndLessThanOrderByStartDesc(userId, now,
+                        pageRequest);
             case FUTURE:
-                return bookingRepository.findByBookerIdAndStartGreaterThanOrderByStartDesc(userId, LocalDateTime.now());
+                return bookingRepository.findByBookerIdAndStartGreaterThanOrderByStartDesc(userId, now,
+                        pageRequest);
             case WAITING:
-                return bookingRepository.findByBookerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.WAITING);
+                return bookingRepository.findByBookerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.WAITING,
+                        pageRequest);
             case REJECTED:
-                return bookingRepository.findByBookerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.REJECTED);
+                return bookingRepository.findByBookerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.REJECTED,
+                        pageRequest);
             default:
                 throw new UnsupportedOperationException("Статус не поддерживается");
         }
     }
 
     @Override
-    public List<Booking> getAllByOwnerId(Long userId, String state) {
+    public List<Booking> getAllByOwnerId(Long userId, String state, Integer from, Integer size) {
         log.info("Получение всех бронирований по вещам для владельца с id = {}", userId);
         checkUserExists(userId);
 
+        LocalDateTime now = LocalDateTime.now();
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+
         switch (convertStringToState(state)) {
             case ALL:
-                return bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
+                return bookingRepository.findByItemOwnerIdOrderByStartDesc(userId, pageRequest);
             case CURRENT:
                 return bookingRepository.findByItemOwnerIdAndStartLessThanEqualAndEndGreaterThanEqualOrderByStartDesc(
-                        userId, LocalDateTime.now(), LocalDateTime.now());
+                        userId, now, now, pageRequest);
             case PAST:
-                return bookingRepository.findByItemOwnerIdAndEndLessThanOrderByStartDesc(userId, LocalDateTime.now());
+                return bookingRepository.findByItemOwnerIdAndEndLessThanOrderByStartDesc(userId, now,
+                        pageRequest);
             case FUTURE:
-                return bookingRepository.findByItemOwnerIdAndStartGreaterThanOrderByStartDesc(userId, LocalDateTime.now());
+                return bookingRepository.findByItemOwnerIdAndStartGreaterThanOrderByStartDesc(userId, now,
+                        pageRequest);
             case WAITING:
-                return bookingRepository.findByItemOwnerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.WAITING);
+                return bookingRepository.findByItemOwnerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.WAITING,
+                        pageRequest);
             case REJECTED:
-                return bookingRepository.findByItemOwnerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.REJECTED);
+                return bookingRepository.findByItemOwnerIdAndStatusIsOrderByStartDesc(userId, BookingStatus.REJECTED,
+                        pageRequest);
             default:
                 throw new UnsupportedOperationException("Статус не поддерживается");
         }

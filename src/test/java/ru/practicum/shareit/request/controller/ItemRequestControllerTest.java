@@ -278,7 +278,7 @@ class ItemRequestControllerTest {
     void getByUserId_whenUserNotFound_thenNotFoundReturned() {
         when(itemRequestService.getByUserId(userId, DEFAULT_PAGE_START, DEFAULT_PAGE_SIZE)).thenThrow(EntityNotFoundException.class);
 
-        mockMvc.perform(get(URL+ "/all")
+        mockMvc.perform(get(URL + "/all")
                         .header(HEADER, userId))
                 .andExpect(status().isNotFound());
         verify(itemRequestService).getByUserId(userId, DEFAULT_PAGE_START, DEFAULT_PAGE_SIZE);

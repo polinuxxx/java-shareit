@@ -90,8 +90,8 @@ class ItemWithBookingViewTest {
                 .isEqualTo(view.getItem().getComments().get(0).getId().intValue());
         assertThat(result).extractingJsonPathStringValue("$.comments[0].text")
                 .isEqualTo(view.getItem().getComments().get(0).getText());
-        assertThat(result).extractingJsonPathStringValue("$.comments[0].authorName").
-                isEqualTo(view.getItem().getComments().get(0).getAuthorName());
+        assertThat(result).extractingJsonPathStringValue("$.comments[0].authorName")
+                .isEqualTo(view.getItem().getComments().get(0).getAuthorName());
         assertThat(result).extractingJsonPathStringValue("$.comments[0].created")
                 .isEqualTo(view.getItem().getComments().get(0).getCreationDate().toString());
 

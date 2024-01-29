@@ -65,8 +65,8 @@ class ItemViewTest {
                 .isEqualTo(view.getComments().get(0).getId().intValue());
         assertThat(result).extractingJsonPathStringValue("$.comments[0].text")
                 .isEqualTo(view.getComments().get(0).getText());
-        assertThat(result).extractingJsonPathStringValue("$.comments[0].authorName").
-                isEqualTo(view.getComments().get(0).getAuthorName());
+        assertThat(result).extractingJsonPathStringValue("$.comments[0].authorName")
+                .isEqualTo(view.getComments().get(0).getAuthorName());
         assertThat(result).extractingJsonPathStringValue("$.comments[0].created")
                 .isEqualTo(view.getComments().get(0).getCreationDate().toString());
     }

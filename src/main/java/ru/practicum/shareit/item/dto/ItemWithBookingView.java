@@ -3,11 +3,10 @@ package ru.practicum.shareit.item.dto;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.item.model.Item;
 
 /**
@@ -15,9 +14,8 @@ import ru.practicum.shareit.item.model.Item;
  */
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@SuperBuilder
 public class ItemWithBookingView {
 
     @JsonUnwrapped
@@ -30,7 +28,7 @@ public class ItemWithBookingView {
     @Getter
     @Setter
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    @SuperBuilder
+    @Builder
     public static class BookingView {
         Long id;
 

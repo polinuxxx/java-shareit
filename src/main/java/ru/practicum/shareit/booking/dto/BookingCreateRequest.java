@@ -6,11 +6,10 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.model.Booking;
 
 /**
@@ -18,8 +17,7 @@ import ru.practicum.shareit.booking.model.Booking;
  */
 @Getter
 @Setter
-@SuperBuilder
-@NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingCreateRequest {
     @NotNull

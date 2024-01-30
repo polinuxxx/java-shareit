@@ -3,10 +3,10 @@ package ru.practicum.shareit.request.internal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.request.model.ItemRequest;
 
 /**
@@ -15,7 +15,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@SuperBuilder
+@Builder
 public class ItemRequestModel {
     Long id;
 
@@ -28,7 +28,7 @@ public class ItemRequestModel {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     @Getter
     @Setter
-    @SuperBuilder
+    @Builder
     public static class ItemModel {
         Long id;
 

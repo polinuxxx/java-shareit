@@ -4,11 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.request.model.ItemRequest;
 
 /**
@@ -16,8 +15,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
  */
 @Getter
 @Setter
-@NoArgsConstructor
-@SuperBuilder
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemRequestView {
     Long id;
@@ -33,7 +31,7 @@ public class ItemRequestView {
      * Вложенное вью для вещи.
      */
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    @SuperBuilder
+    @Builder
     @Getter
     @Setter
     public static class ItemView {

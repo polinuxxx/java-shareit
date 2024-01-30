@@ -2,9 +2,9 @@ package ru.practicum.shareit.item.internal;
 
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.internal.BookingModel;
 import ru.practicum.shareit.item.model.Item;
 
@@ -13,7 +13,7 @@ import ru.practicum.shareit.item.model.Item;
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@SuperBuilder
+@Builder
 public class ItemModel {
     Long id;
 

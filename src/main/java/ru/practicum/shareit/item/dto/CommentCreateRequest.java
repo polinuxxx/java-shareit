@@ -2,11 +2,11 @@ package ru.practicum.shareit.item.dto;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 import ru.practicum.shareit.item.model.Comment;
 
 /**
@@ -14,8 +14,8 @@ import ru.practicum.shareit.item.model.Comment;
  */
 @Getter
 @Setter
-@NoArgsConstructor
-@SuperBuilder
+@Builder
+@Jacksonized
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentCreateRequest {
     @NotBlank

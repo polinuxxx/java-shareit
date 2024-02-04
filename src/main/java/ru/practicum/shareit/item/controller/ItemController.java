@@ -2,7 +2,9 @@ package ru.practicum.shareit.item.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,7 @@ import ru.practicum.shareit.item.service.ItemService;
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
+@Validated
 public class ItemController {
     private static final String USER_ID_REQUEST_HEADER_NAME = "X-Sharer-User-Id";
 
@@ -61,13 +64,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemWithBookingView> getByUserId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId) {
-        return itemModelConverter.convert(itemService.getByUserId(userId));
+    public List<ItemWithBookingView> getByUserId(@RequestHeader(USER_ID_REQUEST_HEADER_NAME) Long userId,
+                                                 @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                                 @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+        return itemModelConverter.convert(itemService.getByUserId(userId, from, size));
     }
 
     @GetMapping("/search")
-    public List<ItemView> search(@RequestParam String text) {
-        return itemConverter.convert(itemService.search(text));
+    public List<ItemView> search(@RequestParam String text,
+                                 @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                 @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+        return itemConverter.convert(itemService.search(text, from, size));
     }
 
     @PostMapping("/{itemId}/comment")

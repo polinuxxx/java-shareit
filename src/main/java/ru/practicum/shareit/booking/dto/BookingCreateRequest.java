@@ -6,7 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.model.Booking;
 
@@ -14,6 +16,8 @@ import ru.practicum.shareit.booking.model.Booking;
  * Параметры запроса для создания {@link Booking}.
  */
 @Getter
+@Setter
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingCreateRequest {
     @NotNull

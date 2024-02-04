@@ -1,7 +1,9 @@
 package ru.practicum.shareit.user.mapper;
 
 import java.util.List;
+import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
+import ru.practicum.shareit.common.GeneratedMapper;
 import ru.practicum.shareit.user.dto.UserCreateRequest;
 import ru.practicum.shareit.user.dto.UserUpdateRequest;
 import ru.practicum.shareit.user.dto.UserView;
@@ -11,6 +13,7 @@ import ru.practicum.shareit.user.model.User;
  * Конвертер для {@link User}.
  */
 @Mapper(componentModel = "spring")
+@AnnotateWith(GeneratedMapper.class)
 public interface UserConverter {
 
     User convert(UserCreateRequest request);

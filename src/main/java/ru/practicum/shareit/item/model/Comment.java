@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.model;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -34,4 +36,7 @@ public class Comment extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     User author;
+
+    @Column(name = "creation_date")
+    LocalDateTime creationDate;
 }
